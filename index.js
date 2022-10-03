@@ -37,6 +37,15 @@ app.get('/film/title/:genre', (req, res) =>{
     });
 });
 
+app.use(express.json());
+app.post('/category-add', (req, res) => {
+    const category_info = req.body;
+    db.query('INSERT INTO category SET ?',category_info, (error, result) => {
+        if (error) throw error;
+        res.status(201).send(`Category added with ID: ${result.insertId}`);
+    });
+}); 
+
 //------------------- 4 --------------------
 
 app.get('/film/actor/:id', (req, res) =>{
@@ -75,5 +84,100 @@ app.get('/film/genre', (req, res) =>{
         return res.send({data: result});
     });
 });
+
+//------------------- МЕТОДЫ --------------
+
+app.use(express.json());
+app.post('/actor-add', (req, res) => {
+    const actor_info = req.body;
+    db.query('INSERT INTO actor SET ?',actor_info, (error, result) => {
+        if (error) throw error;
+        res.status(201).send(`Actor added with ID: ${result.insertId}`);
+    });
+}); 
+
+
+app.put('/actor-update/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('UPDATE actor SET ? WHERE actor_id = ?',[req.body, id], (error) => {
+        if (error) throw error;
+        res.status(200).send(`Actor with ${id} updated successfully!`);
+    });
+}); 
+
+app.delete('/actor-delete/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('DELETE FROM actor WHERE actor_id = ?',id, (error) => {
+        if (error) throw error;
+        res.status(200).send(`Actor with ${id} deleted successfully!`);
+    });
+}); 
+
+//------------------- МЕТОДЫ для фильмов --------------
+
+// "title":"DANIEL MONJANE",
+// "description":"LALALALALl",
+// "release_year":"2008",
+// "language_id":"1",
+// "rental_duration":"5",
+// "rental_rate":"4.88",
+// "length":"91",
+// "replacement_cost":"20.99",
+// "rating":"PG"
+
+
+app.post('/film-add', (req, res) => {
+    const film_info = req.body;
+    db.query('INSERT INTO film SET ?',film_info, (error, result) => {
+        if (error) throw error;
+        res.status(201).send(`Film added with ID: ${result.insertId}`);
+    });
+}); 
+
+
+app.put('/film-update/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('UPDATE film SET ? WHERE film_id = ?',[req.body, id], (error) => {
+        if (error) throw error;
+        res.status(200).send(`Film with ${id} updated successfully!`);
+    });
+}); 
+
+app.delete('/film-delete/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('DELETE FROM film WHERE film_id = ?',id, (error) => {
+        if (error) throw error;
+        res.status(200).send(`Film with ${id} deleted successfully!`);
+    });
+}); 
+
+//------------------- МЕТОДЫ для Категорий --------------
+
+
+
+app.post('/category-add', (req, res) => {
+    const category_info = req.body;
+    db.query('INSERT INTO category SET ?',category_info, (error, result) => {
+        if (error) throw error;
+        res.status(201).send(`Category added with ID: ${result.insertId}`);
+    });
+}); 
+
+
+app.put('/category-update/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('UPDATE category SET ? WHERE category_id = ?',[req.body, id], (error) => {
+        if (error) throw error;
+        res.status(200).send(`Category with ${id} updated successfully!`);
+    });
+}); 
+
+app.delete('/category-delete/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('DELETE FROM category WHERE category_id = ?',id, (error) => {
+        if (error) throw error;
+        res.status(200).send(`Category with ${id} deleted successfully!`);
+    });
+}); 
 
 app.listen(3000)
